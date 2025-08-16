@@ -64,12 +64,21 @@ python main.py
 docker-compose up -d
 ```
 
-### Coolify Deployment
+### Coolify Deployment (Otomatik PostgreSQL ile)
 
-1. Create new app in Coolify
-2. Connect Git repository
-3. Set environment variables in Coolify UI
-4. Deploy with automatic Docker build
+**Tek tıkla deployment:**
+
+1. **Coolify'da yeni app oluştur** (Docker Compose)
+2. **Git repository'yi bağla**
+3. **Environment variables ayarla:**
+   ```bash
+   SECRET_KEY=your-secret-key-here
+   SESSION_SECRET=your-session-secret-here
+   POSTGRES_PASSWORD=your-db-password-here
+   ```
+4. **Deploy et!** ✅
+
+**PostgreSQL otomatik kurulur** - ekstra addon gerekmez!
 
 ## Default Credentials
 

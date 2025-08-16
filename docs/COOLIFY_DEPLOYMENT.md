@@ -17,58 +17,45 @@ This guide will help you deploy the IPAM Platform on Coolify.
 5. Choose "Docker" as the build pack
 6. Set application name as "ipam-platform"
 
-## Step 2: Configure Environment Variables
+## Step 2: Configure Environment Variables (Opsiyonel)
 
-In Coolify application settings, add the following environment variables:
+**Önemli:** IPAM Platform otomatik PostgreSQL kurulumu ile gelir. Sadece güvenlik ayarlarını değiştirmeniz yeterlidir.
 
-### Required Variables
+Coolify uygulama ayarlarında aşağıdaki environment variable'ları ekleyebilirsiniz:
+
+### Güvenlik Ayarları (Önemli: Bunları değiştirin!)
 
 ```bash
-# Flask Configuration
-FLASK_APP=main.py
-FLASK_ENV=production
-
-# Security (IMPORTANT: Change these!)
+# Güvenlik (ÖNEMLİ: Bunları değiştirin!)
 SECRET_KEY=your-super-secret-key-change-this-in-production
 SESSION_SECRET=another-super-secret-key-change-this-too
-
-# Application Settings
-APP_NAME=IPAM Platform
-APP_PORT=5000
-APP_HOST=0.0.0.0
-
-# Locale Settings
-DEFAULT_LOCALE=tr_TR
-TIMEZONE=Europe/Istanbul
+POSTGRES_PASSWORD=your-secure-database-password-here
 ```
 
-### Database Configuration
-
-The `DATABASE_URL` will be automatically provided by Coolify when you attach a PostgreSQL addon (see Step 3).
-
-### Optional Variables
+### Opsiyonel Ayarlar
 
 ```bash
-# Exchange Rate API (for currency conversion)
+# Exchange Rate API (döviz dönüşümü için)
 EXCHANGE_RATE_API_KEY=your-api-key-here
 EXCHANGE_RATE_API_URL=https://api.exchangerate-api.com/v4/latest/
 
-# Logging
-LOG_TO_STDOUT=1
+# Log seviyesi
 LOG_LEVEL=INFO
 ```
 
-## Step 3: Add PostgreSQL Database
+**Not:** Diğer tüm ayarlar otomatik olarak docker-compose.yml dosyasından alınır.
 
-1. In your application settings, go to "Addons"
-2. Click "Add Addon" → "PostgreSQL"
-3. Choose the latest PostgreSQL version (15 recommended)
-4. Set database name: `ipam_db`
-5. Set username: `ipam_user`
-6. Generate a secure password
-7. Deploy the addon
+## Step 3: Otomatik PostgreSQL Kurulumu ✅
 
-Once deployed, Coolify will automatically set the `DATABASE_URL` environment variable.
+**Bu adım otomatik olarak gerçekleşir!** IPAM Platform ile birlikte PostgreSQL otomatik olarak kurulur ve yapılandırılır:
+
+- ✅ **PostgreSQL 15** otomatik kurulum
+- ✅ **Database**: `ipam_db` otomatik oluşturulur
+- ✅ **Username**: `ipam_user` otomatik ayarlanır
+- ✅ **Password**: Environment variable'dan alınır
+- ✅ **Türkçe karakter desteği** aktif
+- ✅ **Performans optimizasyonları** uygulanır
+- ✅ **Health check** otomatik yapılandırılır
 
 ## Step 4: Configure Build and Deploy
 
