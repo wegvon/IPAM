@@ -5,6 +5,10 @@ services:
     build: .
     ports:
       - "5000:5000"
+    labels:
+      - "coolify.managed=true"
+      - "coolify.name=ipam-web"
+      - "coolify.domain=185.85.238.230:5000"
     environment:
       # Flask Configuration
       - FLASK_ENV=${FLASK_ENV:-production}

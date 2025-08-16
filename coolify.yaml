@@ -8,8 +8,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    domains:
+      - "185.85.238.230:5000"
     healthcheck:
-      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/health', timeout=5)"]
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -24,9 +26,11 @@ services:
       - DEFAULT_LOCALE=tr_TR
       - TIMEZONE=Europe/Istanbul
       - LOG_TO_STDOUT=1
+      - APP_HOST=0.0.0.0
+      - APP_PORT=5000
     
   db:
-    image: postgres:15-alpine
+    image: postgres:15
     environment:
       - POSTGRES_USER=ipam_user
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ipam_secure_2024}
@@ -35,9 +39,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ipam_user -d ipam_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
 volumes:
   postgres_data:
