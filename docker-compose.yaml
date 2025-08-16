@@ -37,7 +37,7 @@ services:
       - ipam-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/health', timeout=5)"]
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -55,33 +55,22 @@ services:
       "
 
   db:
-    image: postgres:15-alpine
+    image: postgres:15
     environment:
       - POSTGRES_USER=ipam_user
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ipam_secure_2024}
       - POSTGRES_DB=ipam_db
-      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
     networks:
       - ipam-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ipam_user -d ipam_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 40s
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
     restart: unless-stopped
-    command: >
-      postgres
-      -c max_connections=100
-      -c shared_buffers=256MB
-      -c effective_cache_size=1GB
-      -c maintenance_work_mem=64MB
-      -c checkpoint_completion_target=0.9
-      -c wal_buffers=16MB
-      -c default_statistics_target=100
 
 volumes:
   postgres_data:
