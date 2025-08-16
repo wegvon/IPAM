@@ -60,7 +60,7 @@ services:
       - POSTGRES_USER=ipam_user
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ipam_secure_2024}
       - POSTGRES_DB=ipam_db
-      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=tr_TR.UTF-8 --lc-ctype=tr_TR.UTF-8
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
@@ -71,12 +71,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 30s
+      start_period: 40s
     restart: unless-stopped
     command: >
       postgres
-      -c shared_preload_libraries=pg_stat_statements
-      -c pg_stat_statements.track=all
       -c max_connections=100
       -c shared_buffers=256MB
       -c effective_cache_size=1GB

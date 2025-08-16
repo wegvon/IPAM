@@ -9,7 +9,6 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
     
     -- Create extensions if needed
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-    CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
     
     -- Grant all privileges to ipam_user
     GRANT ALL PRIVILEGES ON DATABASE ipam_db TO ipam_user;
