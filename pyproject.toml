@@ -1,0 +1,39 @@
+[project]
+name = "ipam-platform"
+version = "1.0.0"
+description = "IP Subnet Management Platform for network administrators"
+authors = [{ name = "IPAM Team", email = "admin@ipam.local" }]
+dependencies = [
+    "flask>=3.1.1",
+    "flask-sqlalchemy>=3.1.1",
+    "flask-login>=0.6.3",
+    "flask-migrate>=4.1.0",
+    "flask-wtf>=1.2.2",
+    "sqlalchemy>=2.0.41",
+    "psycopg2-binary>=2.9.10",
+    "werkzeug>=3.1.3",
+    "wtforms>=3.2.1",
+    "gunicorn>=23.0.0",
+    "requests>=2.32.4",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.7.0",
+    "flake8>=6.1.0",
+]
+
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"

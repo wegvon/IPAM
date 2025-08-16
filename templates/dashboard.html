@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h3 mb-4">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+                <small class="text-muted">/ Hoşgeldin, {{ current_user.username }}!</small>
+            </h1>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                Toplam Subnet
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold">0</div>
+                        </div>
+                        <div class="text-white-50">
+                            <i class="fas fa-sitemap fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                Aktif Müşteri
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold">0</div>
+                        </div>
+                        <div class="text-white-50">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-info text-white mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                Atanan IP
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold">0</div>
+                        </div>
+                        <div class="text-white-50">
+                            <i class="fas fa-network-wired fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-warning text-white mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                Toplam Gelir (TRY)
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold">₺0</div>
+                        </div>
+                        <div class="text-white-50">
+                            <i class="fas fa-lira-sign fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Available Subnets -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list"></i> Kullanılabilir Subnets
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-network-wired fa-3x mb-3"></i>
+                        <p>Henüz subnet eklenmemiş.</p>
+                        <a href="{{ url_for('subnets.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> İlk Subnet'i Ekle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clock"></i> Son Aktiviteler
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-history fa-3x mb-3"></i>
+                        <p>Henüz aktivite bulunmuyor.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt"></i> Hızlı İşlemler
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center mb-3">
+                            <a href="{{ url_for('subnets.create') }}" class="btn btn-outline-primary btn-lg w-100">
+                                <i class="fas fa-plus-circle fa-2x mb-2 d-block"></i>
+                                Subnet Ekle
+                            </a>
+                        </div>
+                        <div class="col-md-3 text-center mb-3">
+                            <a href="{{ url_for('customers.create') }}" class="btn btn-outline-success btn-lg w-100">
+                                <i class="fas fa-user-plus fa-2x mb-2 d-block"></i>
+                                Müşteri Ekle
+                            </a>
+                        </div>
+                        <div class="col-md-3 text-center mb-3">
+                            <a href="{{ url_for('assignments.create') }}" class="btn btn-outline-info btn-lg w-100">
+                                <i class="fas fa-handshake fa-2x mb-2 d-block"></i>
+                                Atama Yap
+                            </a>
+                        </div>
+                        <div class="col-md-3 text-center mb-3">
+                            <a href="{{ url_for('reports.index') }}" class="btn btn-outline-warning btn-lg w-100">
+                                <i class="fas fa-chart-bar fa-2x mb-2 d-block"></i>
+                                Rapor Görüntüle
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://ipam_user:ipam_password@db:5432/ipam_db
+      - SECRET_KEY=dev-secret-key-change-in-production
+      - SESSION_SECRET=dev-session-secret-change-in-production
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ipam-network
+    restart: unless-stopped
+    command: >
+      sh -c "
+        flask db upgrade &&
+        flask seed-data || true &&
+        gunicorn --bind 0.0.0.0:5000 --workers 2 --threads 2 --reload main:app
+      "
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=ipam_user
+      - POSTGRES_PASSWORD=ipam_password
+      - POSTGRES_DB=ipam_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - ipam-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ipam_user -d ipam_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@ipam.local
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+    ports:
+      - "5050:80"
+    networks:
+      - ipam-network
+    depends_on:
+      - db
+    restart: unless-stopped
+    profiles:
+      - tools
+
+volumes:
+  postgres_data:
+
+networks:
+  ipam-network:
+    driver: bridge
