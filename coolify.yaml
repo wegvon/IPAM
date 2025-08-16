@@ -1,0 +1,43 @@
+# Coolify Configuration for IPAM Platform
+# This file helps Coolify automatically detect and configure the deployment
+
+name: ipam-platform
+services:
+  web:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    environment:
+      - FLASK_APP=main.py
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://ipam_user:${POSTGRES_PASSWORD:-ipam_secure_2024}@db:5432/ipam_db
+      - SECRET_KEY=${SECRET_KEY:-change-this-super-secret-key-in-production}
+      - SESSION_SECRET=${SESSION_SECRET:-change-this-session-secret-too}
+      - APP_NAME=IPAM Platform
+      - DEFAULT_LOCALE=tr_TR
+      - TIMEZONE=Europe/Istanbul
+      - LOG_TO_STDOUT=1
+    
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=ipam_user
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ipam_secure_2024}
+      - POSTGRES_DB=ipam_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ipam_user -d ipam_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

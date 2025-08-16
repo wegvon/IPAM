@@ -11,6 +11,7 @@ Bu rehber IPAM Platform'u Coolify'da nasıl kuracağınızı gösterir.
 3. Branch seçin (genelde `main` veya `master`)
 4. **"Docker Compose"** buildpack'i seçin
 5. Uygulama adını **"ipam-platform"** olarak ayarlayın
+6. **Docker Compose dosyası**: `docker-compose.yaml` (otomatik tespit edilir)
 
 ### Adım 2: Güvenlik Ayarları (Önemli!)
 
